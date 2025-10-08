@@ -95,29 +95,29 @@ export function ApiKeyModal({ apiKey, onClose }: ApiKeyModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+      <div className="theme-bg-secondary rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 theme-bg-secondary border-b theme-border px-6 py-4 flex items-center justify-between">
+          <h2 className="text-2xl font-bold theme-text-primary">
             {apiKey ? 'Edit API Key' : 'Add New API Key'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+            className="p-2 hover:theme-bg-tertiary rounded-lg transition-colors"
             aria-label="Close"
           >
-            <X className="w-5 h-5 text-slate-500 dark:text-slate-400" />
+            <X className="w-5 h-5 theme-text-tertiary" />
           </button>
         </div>
 
         {decrypting ? (
           <div className="p-8 text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-4"></div>
-            <p className="text-slate-600 dark:text-slate-400">Decrypting data...</p>
+            <p className="theme-text-secondary">Decrypting data...</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             <div>
-              <label htmlFor="serviceName" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label htmlFor="serviceName" className="block text-sm font-medium theme-text-secondary mb-2">
                 Service/Website Name *
               </label>
               <input
@@ -126,13 +126,13 @@ export function ApiKeyModal({ apiKey, onClose }: ApiKeyModalProps) {
                 value={serviceName}
                 onChange={(e) => setServiceName(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                className="w-full px-4 py-2 border theme-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent theme-bg-secondary theme-text-primary"
                 placeholder="e.g., OpenAI, Stripe, AWS"
               />
             </div>
 
             <div>
-              <label htmlFor="emailUsername" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label htmlFor="emailUsername" className="block text-sm font-medium theme-text-secondary mb-2">
                 Email/Username
               </label>
               <input
@@ -140,13 +140,13 @@ export function ApiKeyModal({ apiKey, onClose }: ApiKeyModalProps) {
                 type="text"
                 value={emailUsername}
                 onChange={(e) => setEmailUsername(e.target.value)}
-                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                className="w-full px-4 py-2 border theme-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent theme-bg-secondary theme-text-primary"
                 placeholder="account@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium theme-text-secondary mb-2">
                 Password
               </label>
               <input
@@ -154,16 +154,16 @@ export function ApiKeyModal({ apiKey, onClose }: ApiKeyModalProps) {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                className="w-full px-4 py-2 border theme-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent theme-bg-secondary theme-text-primary"
                 placeholder="••••••••"
               />
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              <p className="mt-1 text-xs theme-text-tertiary">
                 Optional. Will be encrypted before storage.
               </p>
             </div>
 
             <div>
-              <label htmlFor="apiKey" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label htmlFor="apiKey" className="block text-sm font-medium theme-text-secondary mb-2">
                 API Key *
               </label>
               <textarea
@@ -172,16 +172,16 @@ export function ApiKeyModal({ apiKey, onClose }: ApiKeyModalProps) {
                 onChange={(e) => setApiKeyValue(e.target.value)}
                 required
                 rows={3}
-                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-mono text-sm"
+                className="w-full px-4 py-2 border theme-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent theme-bg-secondary theme-text-primary font-mono text-sm"
                 placeholder="sk-proj-abc123..."
               />
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              <p className="mt-1 text-xs theme-text-tertiary">
                 Will be encrypted with AES-256 before storage.
               </p>
             </div>
 
             <div>
-              <label htmlFor="notes" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label htmlFor="notes" className="block text-sm font-medium theme-text-secondary mb-2">
                 Notes
               </label>
               <textarea
@@ -189,13 +189,13 @@ export function ApiKeyModal({ apiKey, onClose }: ApiKeyModalProps) {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
-                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                className="w-full px-4 py-2 border theme-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent theme-bg-secondary theme-text-primary"
                 placeholder="Additional information or context..."
               />
             </div>
 
             <div>
-              <label htmlFor="tags" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label htmlFor="tags" className="block text-sm font-medium theme-text-secondary mb-2">
                 Tags
               </label>
               <div className="flex gap-2 mb-2">
@@ -205,13 +205,13 @@ export function ApiKeyModal({ apiKey, onClose }: ApiKeyModalProps) {
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-                  className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                  className="flex-1 px-4 py-2 border theme-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent theme-bg-secondary theme-text-primary"
                   placeholder="e.g., production, test, expired"
                 />
                 <button
                   type="button"
                   onClick={handleAddTag}
-                  className="px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg transition-colors"
+                  className="px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 theme-text-secondary rounded-lg transition-colors"
                 >
                   <Plus className="w-5 h-5" />
                 </button>
@@ -238,23 +238,23 @@ export function ApiKeyModal({ apiKey, onClose }: ApiKeyModalProps) {
             </div>
 
             {error && (
-              <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 text-sm">
+              <div className="p-3 rounded-lg bg-red-50 text-red-800 text-sm">
                 {error}
               </div>
             )}
 
-            <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <div className="flex gap-3 pt-4 border-t theme-border">
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-2.5 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                className="flex-1 px-4 py-2.5 border theme-border theme-text-secondary font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2.5 theme-accent theme-accent-hover text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Saving...' : apiKey ? 'Update Key' : 'Add Key'}
               </button>

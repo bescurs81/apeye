@@ -55,27 +55,27 @@ export function ApiKeysTable({ apiKeys, onEdit, onDelete }: ApiKeysTableProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div className="theme-bg-secondary rounded-xl shadow-sm theme-border border overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
+          <thead className="theme-bg-tertiary theme-border border-b">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium theme-text-tertiary uppercase tracking-wider">
                 Service
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium theme-text-tertiary uppercase tracking-wider">
                 Email/Username
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium theme-text-tertiary uppercase tracking-wider">
                 Password
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium theme-text-tertiary uppercase tracking-wider">
                 API Key
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium theme-text-tertiary uppercase tracking-wider">
                 Tags
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium theme-text-tertiary uppercase tracking-wider">
                 Updated
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
@@ -83,55 +83,55 @@ export function ApiKeysTable({ apiKeys, onEdit, onDelete }: ApiKeysTableProps) {
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+          <tbody className="theme-border divide-y">
             {apiKeys.map((key) => (
-              <tr key={key.id} className="hover:bg-slate-50 dark:hover:bg-slate-900/30 transition-colors">
+              <tr key={key.id} className="hover:theme-bg-tertiary transition-colors">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-slate-900 dark:text-white">
+                  <div className="text-sm font-medium theme-text-primary">
                     {key.service_name}
                   </div>
                   {key.notes && (
-                    <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs truncate">
+                    <div className="text-xs theme-text-tertiary mt-1 max-w-xs truncate">
                       {key.notes}
                     </div>
                   )}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700 dark:text-slate-300">
+                <td className="px-6 py-4 whitespace-nowrap text-sm theme-text-secondary">
                   {key.email_username || '-'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {key.encrypted_password ? (
                     <div className="flex items-center gap-2">
-                      <code className="text-sm font-mono text-slate-700 dark:text-slate-300">
+                      <code className="text-sm font-mono theme-text-secondary">
                         {visiblePasswords.has(key.id)
                           ? decryptedData.get(key.id)?.password || '••••••••'
                           : '••••••••'}
                       </code>
                       <button
                         onClick={() => toggleVisibility(key.id, 'password', key.encrypted_password)}
-                        className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
+                        className="p-1 hover:theme-bg-tertiary rounded transition-colors"
                         aria-label={visiblePasswords.has(key.id) ? 'Hide password' : 'Show password'}
                       >
                         {visiblePasswords.has(key.id) ? (
-                          <EyeOff className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                          <EyeOff className="w-4 h-4 theme-text-tertiary" />
                         ) : (
-                          <Eye className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                          <Eye className="w-4 h-4 theme-text-tertiary" />
                         )}
                       </button>
                       <button
                         onClick={() => copyToClipboard(key.encrypted_password, `pwd-${key.id}`)}
-                        className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
+                        className="p-1 hover:theme-bg-tertiary rounded transition-colors"
                         aria-label="Copy password"
                       >
                         {copiedId === `pwd-${key.id}` ? (
                           <Check className="w-4 h-4 text-green-500" />
                         ) : (
-                          <Copy className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                          <Copy className="w-4 h-4 theme-text-tertiary" />
                         )}
                       </button>
                     </div>
                   ) : (
-                    <span className="text-sm text-slate-400">-</span>
+                    <span className="text-sm theme-text-tertiary">-</span>
                   )}
                 </td>
                 <td className="px-6 py-4">
@@ -171,31 +171,31 @@ export function ApiKeysTable({ apiKeys, onEdit, onDelete }: ApiKeysTableProps) {
                       key.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                          className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-700"
                         >
                           {tag}
                         </span>
                       ))
                     ) : (
-                      <span className="text-sm text-slate-400">-</span>
+                      <span className="text-sm theme-text-tertiary">-</span>
                     )}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+                <td className="px-6 py-4 whitespace-nowrap text-sm theme-text-tertiary">
                   {formatDate(key.updated_at)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex items-center justify-end gap-2">
                     <button
                       onClick={() => onEdit(key)}
-                      className="p-2 text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                       aria-label="Edit"
                     >
                       <Edit className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => onDelete(key.id)}
-                      className="p-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                       aria-label="Delete"
                     >
                       <Trash2 className="w-4 h-4" />

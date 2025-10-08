@@ -1,3 +1,77 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root.light {
+    --bg-primary: 248 250 252;
+    --bg-secondary: 255 255 255;
+    --bg-tertiary: 241 245 249;
+    --text-primary: 15 23 42;
+    --text-secondary: 71 85 105;
+    --text-tertiary: 148 163 184;
+    --border: 226 232 240;
+    --accent: 59 130 246;
+    --accent-hover: 37 99 235;
+  }
+
+  :root.dark {
+    --bg-primary: 15 23 42;
+    --bg-secondary: 30 41 59;
+    --bg-tertiary: 51 65 85;
+    --text-primary: 248 250 252;
+    --text-secondary: 203 213 225;
+    --text-tertiary: 148 163 184;
+    --border: 51 65 85;
+    --accent: 96 165 250;
+    --accent-hover: 59 130 246;
+  }
+
+  :root.emerald {
+    --bg-primary: 236 253 245;
+    --bg-secondary: 255 255 255;
+    --bg-tertiary: 209 250 229;
+    --text-primary: 6 78 59;
+    --text-secondary: 6 95 70;
+    --text-tertiary: 4 120 87;
+    --border: 167 243 208;
+    --accent: 16 185 129;
+    --accent-hover: 5 150 105;
+  }
+}
+
+.theme-bg-primary {
+  background-color: rgb(var(--bg-primary));
+}
+
+.theme-bg-secondary {
+  background-color: rgb(var(--bg-secondary));
+}
+
+.theme-bg-tertiary {
+  background-color: rgb(var(--bg-tertiary));
+}
+
+.theme-text-primary {
+  color: rgb(var(--text-primary));
+}
+
+.theme-text-secondary {
+  color: rgb(var(--text-secondary));
+}
+
+.theme-text-tertiary {
+  color: rgb(var(--text-tertiary));
+}
+
+.theme-border {
+  border-color: rgb(var(--border));
+}
+
+.theme-accent {
+  background-color: rgb(var(--accent));
+}
+
+.theme-accent-hover:hover {
+  background-color: rgb(var(--accent-hover));
+}
