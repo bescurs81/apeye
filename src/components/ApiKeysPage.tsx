@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase, type ApiKey } from '../lib/supabase';
 import { ApiKeysTable } from './ApiKeysTable';
 import { ApiKeyModal } from './ApiKeyModal';
-import { Key, Plus, Search, Filter } from 'lucide-react';
+import { Key, Plus, Search, Filter, Download, Upload } from 'lucide-react';
+import { encrypt } from '../lib/encryption';
 
 export function ApiKeysPage() {
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
@@ -12,6 +13,7 @@ export function ApiKeysPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState<string>('');
   const [allTags, setAllTags] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchApiKeys();
@@ -66,6 +68,103 @@ export function ApiKeysPage() {
     fetchApiKeys();
   };
 
+  const handleExportJSON = () => {
+    const exportData = apiKeys.map(key => ({
+      service_name: key.service_name,
+      email_username: key.email_username,
+      encrypted_password: key.encrypted_password,
+      encrypted_api_key: key.encrypted_api_key,
+      notes: key.notes,
+      tags: key.tags,
+      created_at: key.created_at,
+      updated_at: key.updated_at
+    }));
+
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `api-keys-backup-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportCSV = () => {
+    const headers = ['Service Name', 'Email/Username', 'Notes', 'Tags', 'Created At', 'Updated At'];
+    const rows = apiKeys.map(key => [
+      key.service_name,
+      key.email_username,
+      key.notes.replace(/,/g, ';'),
+      key.tags.join('|'),
+      new Date(key.created_at).toLocaleDateString(),
+      new Date(key.updated_at).toLocaleDateString()
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    const dataBlob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `api-keys-backup-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+
+      if (!Array.isArray(data)) {
+        alert('Invalid file format. Expected an array of API keys.');
+        return;
+      }
+
+      const user = (await supabase.auth.getUser()).data.user;
+      if (!user) {
+        alert('You must be logged in to import data.');
+        return;
+      }
+
+      const importData = data.map(item => ({
+        user_id: user.id,
+        service_name: item.service_name,
+        email_username: item.email_username || '',
+        encrypted_password: item.encrypted_password || '',
+        encrypted_api_key: item.encrypted_api_key,
+        notes: item.notes || '',
+        tags: item.tags || []
+      }));
+
+      const { error } = await supabase
+        .from('api_keys')
+        .insert(importData);
+
+      if (error) {
+        console.error('Error importing data:', error);
+        alert('Failed to import data. Please check the file format.');
+      } else {
+        alert(`Successfully imported ${importData.length} API keys!`);
+        fetchApiKeys();
+      }
+    } catch (err) {
+      console.error('Error parsing file:', err);
+      alert('Failed to parse file. Please ensure it is a valid JSON file.');
+    }
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const filteredKeys = apiKeys.filter(key => {
     const matchesSearch = !searchQuery ||
       key.service_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -79,6 +178,37 @@ export function ApiKeysPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-4 flex flex-wrap gap-2 justify-end">
+        <button
+          onClick={handleExportJSON}
+          className="flex items-center gap-2 px-3 py-2 theme-bg-tertiary hover:theme-bg-tertiary theme-text-primary font-medium rounded-lg transition-colors text-sm"
+        >
+          <Download className="w-4 h-4" />
+          Export JSON
+        </button>
+        <button
+          onClick={handleExportCSV}
+          className="flex items-center gap-2 px-3 py-2 theme-bg-tertiary hover:theme-bg-tertiary theme-text-primary font-medium rounded-lg transition-colors text-sm"
+        >
+          <Download className="w-4 h-4" />
+          Export CSV
+        </button>
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          className="flex items-center gap-2 px-3 py-2 theme-bg-tertiary hover:theme-bg-tertiary theme-text-primary font-medium rounded-lg transition-colors text-sm"
+        >
+          <Upload className="w-4 h-4" />
+          Import JSON
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".json"
+          onChange={handleImport}
+          className="hidden"
+        />
+      </div>
+
       <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="flex-1 w-full sm:w-auto">
           <div className="relative">
