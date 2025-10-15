@@ -1,12 +1,13 @@
-# API Key Manager & Resource Organizer
+# Multi-Page API Key Manager
 
-A secure, full-featured web application for managing API keys, passwords, and organizing useful website resources. Built with React, TypeScript, Tailwind CSS, and Supabase.
+A secure, production-ready web application for managing API keys organized by website/service. Features multi-page navigation, mass adding capabilities, and AES-256 encryption. Built with React, TypeScript, Tailwind CSS, and Supabase.
 
 ## 🎯 Project Overview
 
-This application serves two main purposes:
-1. **API Key Manager** - Securely store and manage API keys, passwords, and credentials with AES-256 encryption
-2. **Resource Organizer** - Organize and categorize useful websites, tools, and resources with an accordion-style interface
+This application provides a comprehensive solution for managing API keys with a focus on organization by service/website:
+1. **Main Dashboard** - View all API keys grouped by website/service with clickable navigation
+2. **Website-Specific Pages** - Dedicated filtered views for each service with mass add functionality
+3. **Secure Storage** - AES-256 encryption for all sensitive data with session-based keys
 
 ## ✅ Completed Features
 
@@ -32,11 +33,25 @@ This application serves two main purposes:
   - [x] Timestamps (created_at, updated_at)
   - [x] Row Level Security policies
 
+- [x] **Multi-Page Architecture**
+  - [x] Main Dashboard with all API keys grouped by service
+  - [x] Clickable service names to navigate to dedicated pages
+  - [x] Website-specific filtered views
+  - [x] React Router integration
+  - [x] Breadcrumb navigation
+
+- [x] **Mass Add Functionality**
+  - [x] MassAddModal component for bulk adding
+  - [x] Dynamic row addition/removal
+  - [x] Multi-field forms (email, password, API key, notes)
+  - [x] Validation and error handling
+  - [x] Batch encryption and storage
+
 - [x] **CRUD Operations**
-  - [x] Create new API key entries
-  - [x] Read/view all keys
-  - [x] Update existing keys
+  - [x] Create new API key entries (single & mass)
+  - [x] Read/view all keys by service
   - [x] Delete keys with confirmation
+  - [x] Automatic updates across views
 
 - [x] **Security Features**
   - [x] AES-256 encryption using Web Crypto API
@@ -46,29 +61,39 @@ This application serves two main purposes:
   - [x] Automatic key clearing on logout
 
 - [x] **Organization & Search**
-  - [x] Tag-based categorization
+  - [x] Automatic grouping by service name
   - [x] Search across service names, emails, and notes
-  - [x] Filter by tags
+  - [x] Service-specific data isolation
   - [x] Sort by creation date
 
 - [x] **Data Management**
-  - [x] Export to JSON format
-  - [x] Export to CSV format
-  - [x] Import from JSON file
+  - [x] Export to JSON format (per service or all)
   - [x] Encrypted data preservation on export
 
 ### User Interface
 - [x] **Navigation**
-  - [x] Multi-page navigation (API Keys, Settings, Documentation)
+  - [x] React Router-based multi-page navigation
+  - [x] Dashboard, Settings, Documentation pages
+  - [x] Dynamic routing for website pages
+  - [x] Active state indicators
   - [x] Responsive header with user info
   - [x] Sign out functionality
 
-- [x] **API Keys Page**
-  - [x] Searchable data table
-  - [x] Inline edit and delete
-  - [x] Show/hide sensitive fields
-  - [x] Tag filtering
-  - [x] Export/import buttons
+- [x] **Main Dashboard Page**
+  - [x] Service-grouped API key display
+  - [x] Clickable service cards
+  - [x] API key count per service
+  - [x] Expandable service sections
+  - [x] Global search functionality
+  - [x] Show/hide and copy functionality
+
+- [x] **Website-Specific Pages**
+  - [x] Filtered view by service name
+  - [x] Mass Add button
+  - [x] Back to Dashboard navigation
+  - [x] Export for specific service
+  - [x] Full CRUD operations
+  - [x] Detailed table view
 
 - [x] **Settings Page**
   - [x] Account information display
@@ -154,11 +179,44 @@ This application serves two main purposes:
 ## 🛠 Tech Stack
 
 - **Frontend**: React 18, TypeScript, Vite
+- **Routing**: React Router DOM v6
 - **Styling**: Tailwind CSS with custom theme system
 - **Backend**: Supabase (PostgreSQL, Authentication, RLS)
 - **Encryption**: Web Crypto API (AES-256-GCM)
 - **Icons**: Lucide React
 - **State Management**: React Context API
+
+## 🏗 Architecture
+
+### Page Structure
+```
+/dashboard - Main dashboard showing all services
+/website/:serviceName - Filtered view for specific service
+/settings - User settings and theme preferences
+/docs - Documentation and help
+```
+
+### Component Hierarchy
+```
+Dashboard (Router)
+├── Navigation
+├── MainDashboard
+│   └── Service Groups (clickable)
+├── WebsitePage
+│   ├── MassAddModal
+│   └── API Keys Table
+├── SettingsPage
+└── DocumentationPage
+```
+
+### Data Flow
+1. User views grouped services on MainDashboard
+2. Clicks service name → navigates to `/website/:serviceName`
+3. WebsitePage filters data by service name
+4. Mass Add button opens modal
+5. Multiple API keys added in one operation
+6. Data encrypted client-side before storage
+7. Updates reflected in both filtered and main views
 
 ## 📦 Database Schema
 
@@ -253,13 +311,34 @@ npm run build
 ## 📝 Usage
 
 ### Managing API Keys
+
+#### Main Dashboard
 1. Sign up or sign in to your account
-2. Click "Add Key" to create a new API key entry
-3. Enter service name, credentials, and any notes
-4. Use tags to organize keys (e.g., "production", "test")
-5. Use the eye icon to reveal sensitive data
-6. Click copy to clipboard for quick access
-7. Export your data for backup purposes
+2. View all your API keys organized by service/website
+3. Click on any service name to open its dedicated page
+4. Use the search bar to filter across all services
+5. Each service shows the count of associated API keys
+
+#### Website-Specific Pages
+1. Navigate to a service by clicking it on the dashboard
+2. Click "+ Add APIs (Mass Add)" to open the mass add modal
+3. Add multiple rows for bulk entry
+4. Each row includes: Email/Username, Password, API Key, Notes
+5. Click "Add Another Row" to add more entries
+6. Click "Save All" to encrypt and store all entries at once
+7. Use the eye icon to reveal sensitive data
+8. Click copy to clipboard for quick access
+9. Export service-specific data with the Export button
+10. Use "Back to Dashboard" to return to the main view
+
+#### Mass Adding API Keys
+1. From a website page, click "+ Add APIs (Mass Add)"
+2. Fill in the first row with your credentials
+3. Click "+ Add Another Row" for each additional key
+4. Remove rows with the trash icon if needed
+5. Required field: API Key (others optional)
+6. All data is encrypted before storage
+7. Success: Returns to website page with updated list
 
 ### Theme Switching
 1. Click the theme icon in the navigation bar
